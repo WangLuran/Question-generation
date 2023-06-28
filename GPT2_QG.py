@@ -24,7 +24,7 @@ parser.add_argument('--learning_rate', type=float, default=2e-5, help='Specify t
 parser.add_argument('--adam_epsilon', type=float, default=1e-6, help='Specify the AdamW loss epsilon')
 parser.add_argument('--lr_decay', type=float, default=0.85, help='Specify the learning rate decay rate')
 parser.add_argument('--dropout', type=float, default=0.1, help='Specify the dropout rate')
-parser.add_argument('--n_epochs', type=int, default=10, help='Specify the number of epochs to train for')
+parser.add_argument('--n_epochs', type=int, default=1, help='Specify the number of epochs to train for')
 parser.add_argument('--seed', type=int, default=1, help='Specify the global random seed')
 parser.add_argument('--save_path', type=str, help='Load path to which trained model will be saved')
 
