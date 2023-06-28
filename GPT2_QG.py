@@ -12,7 +12,6 @@ import datetime
 
 from datasets import load_dataset
 from transformers import GPT2LMHeadModel,  GPT2Tokenizer, GPT2Config, GPT2LMHeadModel
-from keras.preprocessing.sequence import pad_sequences
 from transformers import AdamW, ElectraConfig
 from transformers import get_linear_schedule_with_warmup
 
