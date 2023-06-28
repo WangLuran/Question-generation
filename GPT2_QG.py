@@ -19,7 +19,7 @@ MAXLEN_passage = 400
 MAXLEN_question = 400
 
 parser = argparse.ArgumentParser(description='Get all command line arguments.')
-parser.add_argument('--batch_size', type=int, default=2, help='Specify the training batch size')
+parser.add_argument('--batch_size', type=int, default=1, help='Specify the training batch size')
 parser.add_argument('--learning_rate', type=float, default=2e-5, help='Specify the initial learning rate')
 parser.add_argument('--adam_epsilon', type=float, default=1e-6, help='Specify the AdamW loss epsilon')
 parser.add_argument('--lr_decay', type=float, default=0.85, help='Specify the learning rate decay rate')
