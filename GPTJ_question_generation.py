@@ -63,7 +63,7 @@ def main(args):
 
     train_data = load_dataset('squad_v2', split='train')
 
-    tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-j-6B")
+    tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-j-6B", bos_token='<|startoftext|>', eos_token='<|endoftext|>', pad_token='<|pad|>')
 
     input_ids = []
     output_ids = []
@@ -164,7 +164,7 @@ def main(args):
         print("  Training epoch took: {:}".format(format_time(time.time() - t0)))
 
     # Save the model to a file
-    file_path = args.save_path+'t5_gen_seed'+str(args.seed)+'.pt'
+    file_path = args.save_path+'gptJ_gen_seed'+str(args.seed)+'.pt'
     torch.save(model, file_path)
 
 if __name__ == '__main__':
