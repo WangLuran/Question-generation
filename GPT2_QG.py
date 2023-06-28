@@ -180,3 +180,7 @@ def main(args):
     # Save the model to a file
     file_path = args.save_path+'gpt2_gen_seed'+str(args.seed)+'.pt'
     torch.save(model, file_path)
+
+if __name__ == '__main__':
+    args = parser.parse_args()
+    main(args)
