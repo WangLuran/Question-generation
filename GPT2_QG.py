@@ -80,8 +80,8 @@ def main(args):
         if len(ex["answers"]["text"])==0:
             continue
         count+=1
-        # if count==100:
-        #     break
+        if count==100:
+            break
         question, passage = ex["question"], ex["context"]
         passage_encodings_dict = tokenizer('<|startoftext|>'+ passage + '<|endoftext|>', truncation=True, max_length=MAXLEN_passage, padding="max_length")
         input_ids.append(passage_encodings_dict['input_ids'])
