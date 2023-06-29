@@ -9,7 +9,7 @@ import openai
 from datasets import load_dataset
 
 parser = argparse.ArgumentParser(description='Get all command line arguments.')
-parser.add_argument('--subset_path', type=str, help='Load path of test data')
+#parser.add_argument('--subset_path', type=str, help='Load path of test data')
 parser.add_argument('--api_key', type=str, help='Load OpenAI API key')
 parser.add_argument('--save_path', type=str, help='Load path to save results with increased distractors')
 
@@ -29,22 +29,21 @@ def main(args):
 
     start_point = len(expanded_examples)
 
-    sample_data = []
-
     train_data = load_dataset('squad_v2', split='train[-5%]')
-    for ex in train_data:
+    print(train_data[100])
+    '''for ex in train_data:
         if len(ex["answers"]["text"])==0:
             continue
         count+=1
         if count==2:
             break
         passage = ex["context"]
-        sample_data.append(passage)
+        sample_data.append(passage)'''
 
     '''with open(args.subset_path) as f:
         sample_data = json.load(f)'''
 
-    for count, item in enumerate(sample_data):
+    '''for count, item in enumerate(sample_data):
         if count < start_point: continue
         print(count)
         context = item
@@ -54,7 +53,7 @@ def main(args):
         response = openai.ChatCompletion.create(model=model, messages=[{"role": "user", "content": prompt}])
         generated_text = response.choices[0].message.content.strip()
         print(generated_text)
-        '''curr_example = {'context': context, 'question': question, 'answer': answer, 'distractors': distractors, 'distractors_more_diverse': distractors_more_diverse}
+        curr_example = {'context': context, 'question': question, 'answer': answer, 'distractors': distractors, 'distractors_more_diverse': distractors_more_diverse}
         batch_examples.append(curr_example)
         if len(batch_examples) == 1:
             expanded_examples += batch_examples
