@@ -79,11 +79,9 @@ def main(args):
         if len(ex["answers"]["text"])==0:
             continue
         count+=1
-        if count==100:
-            break
         question, passage = ex["question"], ex["context"]
         encodings_dict = tokenizer('<|startoftext|>' + '"context:"' + passage + '"question:"' + question + '<|endoftext|>', truncation=True, max_length=MAXLEN_question, padding="max_length")
-        input_ids.append(encodings_dict['input_ids'])
+        input_ids.append(encodings_dict['input_ids'].copy())
         mask_part_label = tokenizer('<|startoftext|>' + '"context:"' + passage + '"question:"')['input_ids']
         encodings_dict['attention_mask'][len(mask_part_label):] = [0 for i in range(len(encodings_dict['input_ids'])-len(mask_part_label))]
         input_att_msks.append(encodings_dict['attention_mask'])
