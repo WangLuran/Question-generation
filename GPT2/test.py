@@ -71,7 +71,7 @@ def main(args):
         print(passage)
         print("-------")
 
-        generated = torch.tensor(tokenizer.encode('context:'+ passage + 'question:')).unsqueeze(0)
+        generated = torch.tensor(tokenizer.encode('<|startoftext|>' + 'context:'+ passage + 'question:')).unsqueeze(0)
         generated = generated.to(device)
 
         sample_outputs = model.generate(
