@@ -1,10 +1,9 @@
-mport argparse
+import argparse
 import os
 import sys
-import json
 
 import torch
-from torch.utils.data import TensorDataset, DataLoader, RandomSampler, SequentialSampler
+from torch.utils.data import TensorDataset, DataLoader, RandomSampler
 import numpy as np
 import random
 import time
@@ -12,7 +11,7 @@ import datetime
 
 from datasets import load_dataset
 from transformers import GPT2LMHeadModel,  GPT2Tokenizer, GPT2Config, GPT2LMHeadModel
-from transformers import AdamW, ElectraConfig
+from transformers import AdamW
 from transformers import get_linear_schedule_with_warmup
 
 MAXLEN_passage = 400
@@ -62,7 +61,7 @@ def main(args):
     # Choose device
     device = get_default_device()
 
-    train_data = load_dataset('squad_v2', split='train')
+    train_data = load_dataset('squad_v2', split='train[:80%]')
 
     # Load the GPT tokenizer.
     tokenizer = GPT2Tokenizer.from_pretrained('gpt2-large', bos_token='<|startoftext|>', eos_token='<|endoftext|>', pad_token='<|pad|>') #gpt2-large
@@ -83,10 +82,12 @@ def main(args):
         if count==100:
             break
         question, passage = ex["question"], ex["context"]
-        passage_encodings_dict = tokenizer('<|startoftext|>'+ passage + '<|endoftext|>', truncation=True, max_length=MAXLEN_passage, padding="max_length")
+        passage_encodings_dict = tokenizer('"context:"' + passage , truncation=True, max_length=MAXLEN_passage, padding="max_length")
         input_ids.append(passage_encodings_dict['input_ids'])
         input_att_msks.append(passage_encodings_dict['attention_mask'])
-        question_encodings_dict = tokenizer('<|startoftext|>'+ question + '<|endoftext|>', truncation=True, max_length=MAXLEN_question, padding="max_length")
+        question_encodings_dict = tokenizer('"context:"' + passage + '"question:"' + question, truncation=True, max_length=MAXLEN_question, padding="max_length")
+        mask_part_label = tokenizer('"context:"' + passage + '"question:"')
+        question_encodings_dict['input_ids'][0:len(mask_part_label)] = [-100 for i in range(len(mask_part_label))]
         output_ids.append(question_encodings_dict['input_ids'])
 
     print(count)
