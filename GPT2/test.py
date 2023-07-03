@@ -6,7 +6,7 @@ import torch
 import datetime
 
 from datasets import load_dataset
-from transformers import GPT2LMHeadModel,  GPT2Tokenizer, GPT2Config, GPT2LMHeadModel
+from transformers import GPT2Tokenizer
 
 MAXLEN_passage = 400
 MAXLEN_question = 400
@@ -71,7 +71,7 @@ def main(args):
         print(passage)
         print("-------")
 
-        generated = torch.tensor(tokenizer.encode('<|startoftext|>'+ passage + '<|endoftext|>')).unsqueeze(0)
+        generated = torch.tensor(tokenizer.encode('context:'+ passage + 'question:')).unsqueeze(0)
         generated = generated.to(device)
 
         sample_outputs = model.generate(
@@ -81,7 +81,7 @@ def main(args):
                                 top_k=50, 
                                 max_length = 300,
                                 top_p=0.95, 
-                                num_return_sequences=3
+                                num_return_sequences=1
                                 )
 
         for i, sample_output in enumerate(sample_outputs):
