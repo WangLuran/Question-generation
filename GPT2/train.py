@@ -82,13 +82,13 @@ def main(args):
         if count==100:
             break
         question, passage = ex["question"], ex["context"]
-        passage_encodings_dict = tokenizer('"context:"' + passage , truncation=True, max_length=MAXLEN_passage, padding="max_length")
-        input_ids.append(passage_encodings_dict['input_ids'])
-        input_att_msks.append(passage_encodings_dict['attention_mask'])
-        question_encodings_dict = tokenizer('"context:"' + passage + '"question:"' + question, truncation=True, max_length=MAXLEN_question, padding="max_length")
-        mask_part_label = tokenizer('"context:"' + passage + '"question:"')
-        question_encodings_dict['input_ids'][0:len(mask_part_label)] = [-100 for i in range(len(mask_part_label))]
-        output_ids.append(question_encodings_dict['input_ids'])
+        encodings_dict = tokenizer('<|startoftext|>' + '"context:"' + passage + '"question:"' + question + '<|endoftext|>', truncation=True, max_length=MAXLEN_question, padding="max_length")
+        input_ids.append(encodings_dict['input_ids'])
+        mask_part_label = tokenizer('<|startoftext|>' + '"context:"' + passage + '"question:"')['input_ids']
+        encodings_dict['attention_mask'][len(mask_part_label):] = [0 for i in range(len(encodings_dict['input_ids'])-len(mask_part_label))]
+        input_att_msks.append(encodings_dict['attention_mask'])
+        encodings_dict['input_ids'][0:len(mask_part_label)] = [-100 for i in range(len(mask_part_label))]
+        output_ids.append(encodings_dict['input_ids'])
 
     print(count)
 
